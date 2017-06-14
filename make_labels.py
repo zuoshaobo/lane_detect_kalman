@@ -69,6 +69,32 @@ def right_line_detect(out_img, rightx_current, margin, minpix, nonzerox, nonzero
 
     return good_right_inds, rightx_current
     
+def draw_on_original(undist, left_fitx, right_fitx, ploty,Minv):
+    # Create an image to draw the lines on
+    color_warp = np.zeros_like(undist).astype(np.uint8)
+
+    # Recast the x and y points into usable format for cv2.fillPoly()
+    pts_left = np.array([np.transpose(np.vstack([left_fitx, ploty]))])
+    pts_right = np.array([np.flipud(np.transpose(np.vstack([right_fitx, ploty])))])
+    pts = np.hstack((pts_left, pts_right))
+
+    # Draw the lane with low confidence region in red
+    cv2.fillPoly(color_warp, np.int_([pts]), (255, 0, 0))
+    
+    #confidence region in green
+    shift = 50
+    diff = (right_fitx - left_fitx)/2
+    pts_left = np.array([np.transpose(np.vstack([left_fitx[400:], ploty[400:]]))])
+    pts_right = np.array([np.flipud(np.transpose(np.vstack([right_fitx[400:], ploty[400:]])))])
+    pts = np.hstack((pts_left, pts_right))
+
+    # Draw the lane onto the warped blank image
+    cv2.fillPoly(color_warp, np.int_([pts]), (0, 255, 0))
+    # Warp the blank back to original image space using inverse perspective matrix (Minv)
+    newwarp = cv2.warpPerspective(color_warp, Minv, (undist.shape[1], undist.shape[0])) 
+    # Combine the result with the original image
+    result = cv2.addWeighted(undist, 1, newwarp, 0.4, 0)
+    return result
 
 def lane_detection(img):
     """Iterates through each binary thresholded image. Uses sliding
@@ -178,8 +204,10 @@ def lane_detection(img):
         right_fit = np.polyfit(righty, rightx, 2)
         
         # Append to the labels list
-	print left_fit
+	print len(leftx)
 	print ","
+    	color_warp = np.zeros_like(out_img).astype(np.uint8)
+
         lane_labels.append(np.append(left_fit, right_fit))
 
 # Load in the re-drawn lane images

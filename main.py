@@ -12,13 +12,14 @@ video_path='../Mexico_raining_on_Highway.mp4'
 video_path='/home/pub/Desktop/New/2017_0606_090815_260.MOV'
 video_path='project_video.mp4'
 video_path='/home/pub/Desktop/New/2017_0607_193733_282.MOV'
-video_path='/home/pub/Desktop/New/2017_0606_183543_265.MOV'
 video_path='/home/pub/Desktop/New/2017_0606_182543_263.MOV'
-video_path='/home/pub/Desktop/New/2017_0606_183043_264.MOV'
 video_path='/home/pub/Desktop/201706050819_000033AA.MP4'
 video_path='challenge_video.mp4'
+video_path='/home/pub/Desktop/New/2017_0606_183043_264.MOV'
+video_path='/home/pub/Desktop/New/2017_0606_183543_265.MOV'
 video_path='/home/pub/Desktop/New/2017_0606_182543_263.MOV'
 video_path='/home/pub/Desktop/New/2017_0607_194233_283.MOV'
+video_path='/media/pub/b65b635d-0615-4f4a-922c-407fb777a2f3/datasets/video_datasets/dataset2/201706130817_000408AA.MP4'
 def main(video_path):
     cap = cv2.VideoCapture(video_path)
 
